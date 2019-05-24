@@ -26,6 +26,7 @@ export default class ExampleChart extends Component {
     const {data} = this.props;
     const preppedData = Object.entries(groupBy(data, keyOfInterest)).map(([key, values]) => {
       return {key, size: values.length};
+      
     });
     return (
       <div>
