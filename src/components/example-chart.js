@@ -16,8 +16,8 @@ export default class ExampleChart extends Component {
   constructor() {
     super();
     this.state = {
-      value: false,
-      keyOfInterest: 'animal'
+      value: false, //tooltip position
+      keyOfInterest: 'animal'//button
     };
   }
 
@@ -34,6 +34,12 @@ export default class ExampleChart extends Component {
           innerRadius={100}
           radius={140}
           getAngle={d => d.size}
+          colorType="literal"
+          getColor={(d, idx) => {
+            return 'red';
+          }}
+          getLabel={d => d.key}
+          showLabels={true}
           data={preppedData}
           onValueMouseOver={v => this.setState({value: v})}
           onSeriesMouseOut={v => this.setState({value: false})}
