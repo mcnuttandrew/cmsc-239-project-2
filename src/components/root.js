@@ -35,9 +35,9 @@ class RootComponent extends React.Component {
   render() {
     return (
       <div className="relative">
-        <Waterfall/>
-        <Feature/>
-        <Median/>
+        <Waterfall data={this.state.songs}/>
+        <Feature data={this.state.songs}/>
+        <Median data={this.state.songs}/>
         <WhoComponent/>
       </div>
     );
