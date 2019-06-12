@@ -1,5 +1,4 @@
 import React from 'react';
-import {csv} from 'd3-fetch';
 import {prepareData} from './../prepareData';
 import Waterfall from './waterfall';
 import Feature from './feature';
@@ -66,12 +65,17 @@ class RootComponent extends React.Component {
             height={1500}
             width={800}
           /> : null }
-        <Feature data={this.state.songs} selectSong={(i) => {
-
-        }}/>
-        <Median data={this.state.songs} selectedSongs={this.state.selectedSongs}/>
+        {this.state.data ?
+          <Feature
+            data={this.state.data}
+            songs={this.state.songs}
+            height={500}
+            width={800}
+            traits={this.state.traits}
+          /> : null }
+        <Median data={this.state.data} selectedSongs={this.state.selectedSongs}/>
         <WhoComponent whoData={this.state.whoData} />
-      </div>
+        </div>
     );
   }
 }

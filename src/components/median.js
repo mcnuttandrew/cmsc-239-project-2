@@ -13,8 +13,8 @@ export default class Median extends Component {
           <h1>Median Bar Chart Component</h1>
         </div>
         <div className="median">
-          <div className="median-dropdown"> *dropdown* </div>
           <div className="median-chart"> *median chart* </div>
+          <div className="median-checklist"> *checklist* </div>
         </div>
       </div>
     );
