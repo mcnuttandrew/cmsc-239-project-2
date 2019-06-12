@@ -9,7 +9,7 @@ export default class Feature extends Component {
     super(props);
 
     this.state = {
-      selectedValue: ''
+      selectedValue: 'valence'
     };
   }
 
@@ -75,7 +75,6 @@ export default class Feature extends Component {
         <div className="feature">
           <div className="feature-dropdown">
             <select onChange={(e) => this.changeSelectedValue(e)}>
-              <option>Select Audio Feature</option>
               <option value="valence">Valence</option>
               <option value="liveness">Liveness</option>
               <option value="acousticness">Acousticness</option>
@@ -84,7 +83,7 @@ export default class Feature extends Component {
             </select>
           </div>
           <div className="feature-chart">
-            <svg className="feature-svg" height={height} width={width}>
+            <svg className="feature-svg" height={height} width={width} transform={'translate(20, 15)'}>
               <g
                 ref={(el) => {
                   this.songFrequencyElement = el;
