@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {scaleOrdinal} from 'd3-scale';
 import {pie, arc} from 'd3-shape';
-import {format} from 'd3-format';
 import {schemeCategory10} from 'd3-scale-chromatic';
 
-const Arc = ({data, index, createArc, colors, myFormat}) => (
+const Arc = ({data, index, createArc, colors}) => (
   <g key={index} className="arc">
     <path className="arc" d={createArc(data)} fill={colors(index)} />
     <text
@@ -27,9 +26,7 @@ const Pie = props => {
     .innerRadius(props.innerRadius)
     .outerRadius(props.outerRadius);
   const colors = scaleOrdinal(schemeCategory10);
-  const myFormat = format('.2f');
   const data = createPie(props.data);
-  console.log(data)
 
   return (
     <svg width={props.width} height={props.height}>
@@ -41,7 +38,6 @@ const Pie = props => {
             index={i}
             createArc={createArc}
             colors={colors}
-            myFormat={myFormat}
           />
         ))}
       </g>
