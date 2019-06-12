@@ -3,12 +3,11 @@ import {csv} from 'd3-fetch';
 import PieChart from './piechart'
 import Map from './map';
 
-
 export default class WhoComponent extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      selectedCountry: null
+      selectedCountry: 'us'
     };
   }
 
@@ -25,10 +24,20 @@ export default class WhoComponent extends React.Component {
   }
 
   render() {
+    const {
+      whoData
+    } = this.props;
     return (
       <div className="relative">
         <Map/>
-        {this.state.selectedCountry ? <PieChart selectedCountry={this.state.selectedCountry}/> : null}
+        {this.state.selectedCountry && whoData ?
+          <PieChart
+            selectedCountry={this.state.selectedCountry}
+            whoData={whoData}
+            height={400}
+            width={400}
+          /> : null
+        }
       </div>
     );
   }
