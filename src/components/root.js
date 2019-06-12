@@ -6,30 +6,25 @@ import Feature from './feature';
 import Median from './median';
 import WhoComponent from './who';
 
-
 class RootComponent extends React.Component {
   constructor() {
     super();
 
-    const metaProps = ['name', 'artists', 'id'];
-    const traits = ['danceability', 'energy', 'acousticness', 'liveness', 'valence'];
-
-    prepareData('./data/songs.csv', metaProps, traits).then(data => {
-      this.state = {
-        songs: data.songs,
-        data: null
-      };
-    });
+    this.state = {
+      isLoaded: false,
+      songs: null,
+      data: null,
+      metaProps: ['name', 'artists', 'id'],
+      traits: ['danceability', 'energy', 'acousticness', 'liveness', 'valence']
+    };
   }
 
-  componentWillMount() {
-    // csv('data/sample-data.csv')
-    //   .then(data => {
-    //     this.setState({
-    //       data,
-    //       loading: false
-    //     });
-    //   });
+  componentDidMount() {
+    prepareData('./data/songs.csv', this.state.metaProps, this.state.traits).then((res) => this.setState({
+      isLoaded: true,
+      data: res,
+      songs: res.songs
+    }));
   }
 
   render() {
