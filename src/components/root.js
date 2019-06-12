@@ -15,7 +15,9 @@ class RootComponent extends React.Component {
       songs: null,
       data: null,
       metaProps: ['name', 'artists', 'id'],
-      traits: ['danceability', 'energy', 'acousticness', 'liveness', 'valence']
+      traits: ['danceability', 'energy', 'acousticness', 'liveness', 'valence'],
+      scales: null,
+      whoData: null
     };
   }
 
@@ -27,7 +29,16 @@ class RootComponent extends React.Component {
         v.selected = true;
         return v;
       }),
-      scales: res.scales
+      scales: res.scales,
+      whoData: {
+        us: [
+          ['Post Malone', 39699916],
+          ['Kendrick Lamar', 21223395],
+          ['G-Eazy', 19889476],
+          ['Migos', 17442167],
+          ['Lil Uzi Vert', 17397323]
+        ]
+      }
     }));
   }
   selectSong(index) {
@@ -56,10 +67,10 @@ class RootComponent extends React.Component {
             width={800}
           /> : null }
         <Feature data={this.state.songs} selectSong={(i) => {
-          
+
         }}/>
         <Median data={this.state.songs} selectedSongs={this.state.selectedSongs}/>
-        <WhoComponent/>
+        <WhoComponent whoData={this.state.whoData} />
       </div>
     );
   }
