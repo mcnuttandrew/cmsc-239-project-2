@@ -7,48 +7,59 @@ import {select} from 'd3-selection';
 export default class Feature extends Component {
   constructor(props) {
     super(props);
+    const {
+      height,
+      width,
+      traits,
+      songs
+    } = props;
+    const selectedValue = 'valence';
 
+    const histObjs = this.generateHistObjs(height, width, traits, songs, selectedValue);
+
+    const histObj = histObjs[selectedValue];
     this.state = {
-      selectedValue: 'valence'
+      selectedValue,
+      histObj
     };
   }
 
   componentDidMount() {
-    this.renderAxis();
+    this.renderAxis(this.state.histObj);
   }
 
-  componentDidUpdate() {
-    this.renderAxis();
-  }
-
-  renderAxis() {
-    if (this.props.data && this.state.selectedValue) {
-      const songs = this.props.songs;
-      const traitValues = songs.reduce((res, d) => {
-        if (d.selected) {
-          res.push(d[this.state.selectedValue]);
-        }
-        return res;
-      }, []);
-      const yScale = scaleLinear()
-      .domain([min(traitValues), max(traitValues)])
-      .range([this.props.height - 25, 0]);
-      const histData = histogram()
-      .domain(yScale.domain())
-      .thresholds(yScale.ticks(5))(traitValues);
-      const xScale = scaleLinear()
-      .domain([0, max(histData, function getLength(d) {
-        return d.length;
-      })])
-      .range([0, this.props.width - 20]);
-      const xAxis = axisBottom(xScale);
-      const yAxis = axisLeft(yScale);
-      if (this.state.selectedValue !== this.state.bucketValue) {
-        this.setState({x: xScale, y: yScale, buckets: histData, bucketValue: this.state.selectedValue});
+  generateHistObjs(height, width, traits, songs, selectedValue) {
+    const selectedSongs = songs.reduce((res, d) => {
+      if (d.selected) {
+        res.push(d);
       }
-      select(this.songFrequencyElement).call(axisG => axisG.call(xAxis));
-      select(this.bucketsElement).call(axisG => axisG.call(yAxis));
-    }
+      return res;
+    }, []);
+    const histObjs = traits.reduce((acc, trait) => {
+      const retVal = {};
+      const traitValues = selectedSongs.map((v) => v[trait]);
+      retVal.yScale = scaleLinear()
+        .domain([min(traitValues), max(traitValues)])
+        .range([height - 25, 0]);
+      retVal.histData = histogram()
+      .domain(retVal.yScale.domain())
+      .thresholds(retVal.yScale.ticks(5))(traitValues);
+      retVal.xScale = scaleLinear()
+        .domain([0, max(retVal.histData, function getLength(d) {
+          return d.length;
+        })])
+        .range([0, width - 20]);
+      retVal.xAxis = axisBottom(retVal.xScale);
+      retVal.yAxis = axisLeft(retVal.yScale);
+      acc[trait] = retVal;
+      return acc;
+    }, {});
+    return histObjs;
+  }
+
+  renderAxis(histObj) {
+    select(this.songFrequencyElement).call(axisG => axisG.call(histObj.xAxis));
+    select(this.bucketsElement).call(axisG => axisG.call(histObj.yAxis));
   }
 
   changeSelectedValue(e) {
@@ -59,14 +70,17 @@ export default class Feature extends Component {
     const {
       height,
       width,
-      data
+      data,
+      traits,
+      songs
     } = this.props;
     const {
-      selectedValue,
-      buckets,
-      x,
-      y
+      selectedValue
     } = this.state;
+    const histObjs = this.generateHistObjs(height, width, traits, songs, selectedValue);
+    const histObj = histObjs[selectedValue];
+    this.renderAxis(histObj);
+
     return (
       <div>
         <div className="feature-heading">
@@ -89,14 +103,14 @@ export default class Feature extends Component {
                   this.songFrequencyElement = el;
                 }}
                 transform={`translate(30, ${height - 25})`}/>
-              {buckets ? buckets.map((bucket, idx) => {
+              {histObj.histData ? histObj.histData.map((bucket, idx) => {
                 return (
                   <rect
                     key={`feature_${idx}`}
-                    height={y(bucket.x0) - y(bucket.x1)}
-                    width={x(bucket.length)}
+                    height={histObj.yScale(bucket.x0) - histObj.yScale(bucket.x1)}
+                    width={histObj.xScale(bucket.length)}
                     x={30}
-                    y={y(bucket.x1)}
+                    y={histObj.yScale(bucket.x1)}
                     fill={data.scales[selectedValue](((bucket.x1 - bucket.x0) / 2) + bucket.x0)} />
                 );
               }) : null}
