@@ -23,16 +23,26 @@ class RootComponent extends React.Component {
     prepareData('./data/songs.csv', this.state.metaProps, this.state.traits).then((res) => this.setState({
       isLoaded: true,
       data: res,
-      songs: res.songs
+      songs: res.songs,
+      selectedSongs: res.songs
     }));
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="relative">
-        <Waterfall data={this.state.songs}/>
-        <Feature data={this.state.songs}/>
-        <Median data={this.state.songs}/>
+        <Waterfall
+          songs={this.state.songs}
+          selectedSongs={this.state.selectedSongs}
+          updateSelectedSongs={songs => this.setState({selectedSongs: songs})}
+          traits={this.state.traits}
+          scales={this.state.data.scales}
+          height={1000}
+          width={600}
+        />
+        <Feature data={this.state.songs} selectedSongs={this.state.selectedSongs}/>
+        <Median data={this.state.songs} selectedSongs={this.state.selectedSongs}/>
         <WhoComponent/>
       </div>
     );
