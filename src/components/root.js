@@ -55,10 +55,13 @@ class RootComponent extends React.Component {
             height={1500}
             width={800}
           /> : null }
-        <Feature data={this.state.songs} selectSong={(i) => {
-          
-        }}/>
-        <Median data={this.state.songs} selectedSongs={this.state.selectedSongs}/>
+        <Feature
+          data={this.state.data}
+          songs={this.state.songs}
+          height={500}
+          width={800}
+          />
+        <Median data={this.state.data} selectedSongs={this.state.selectedSongs}/>
         <WhoComponent/>
       </div>
     );
