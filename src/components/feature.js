@@ -6,9 +6,15 @@ export default class Feature extends Component {
   }
 
   render() {
-    return(
+    return (
       <div>
-        <h1>Feature Component</h1>
+        <div className="feature-heading">
+          <h1>Feature Component</h1>
+        </div>
+        <div className="feature">
+          <div className="feature-chart"> *feature chart* </div>
+          <div className="feature-checklist"> *checklist* </div>
+        </div>
       </div>
     );
   }

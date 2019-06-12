@@ -99,3 +99,7 @@
   padding: 6px;
   text-transform: uppercase;
 }
+
+.feature {
+  display: flex;
+}
