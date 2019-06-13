@@ -11,13 +11,20 @@ export default class WhoComponent extends React.Component {
     this.state = {
       selectedCountry: null
     };
-    this.World = require('./../static/world-data.json');
+    this.World = require('./../static/top-five.json');
 
+  }
+
+  click(input){
+    console.log(input);
+    this.setState((input) => {
+      return {selectedCountry: input};
+    });
   }
 
   render() {
     const whoData = {
-      us: [
+      USA: [
         ['Post Malone', 39699916],
         ['Kendrick Lamar', 21223395],
         ['G-Eazy', 19889476],
@@ -27,7 +34,8 @@ export default class WhoComponent extends React.Component {
     }
     return (
       <div className="relative">
-        <Map data={this.World}/>
+        <Map data={this.World} selectedCountry={this.state.selectedCountry}
+             click={country => this.setState({selectedCountry: country})}/>
         {this.state.selectedCountry && whoData ?
           <PieChart
             selectedCountry={this.state.selectedCountry}

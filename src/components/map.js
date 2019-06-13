@@ -16,10 +16,24 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
+    this.World = require('./../static/top-five.json');
     this.map = require('./../static/world-50m.json');
   }
 
+  handleClick(e) {
+  this.props.click(e.id);
+}
+
+  selected(id){
+    if (Object.keys(this.World).includes(id)){
+      return "teal";
+    }else{
+      return "#ECEFF1";
+    }
+  }
+
   render() {
+
     return (
       <div style={wrapperStyles}>
         <ComposableMap
@@ -36,31 +50,33 @@ class Map extends Component {
         >
           <ZoomableGroup center={[0,20]} disablePanning>
             <Geographies geography={this.map}>
-              {(geographies, projection) => geographies.map((geography, i) => geography.id !== "ATA" && (
+              {(geographies, projection) => geographies.map((geography, i) => geography.id !== "ATA" &&
+              this.props && (
                 <Geography
                   key={i}
                   geography={geography}
                   projection={projection}
                   style={{
                     default: {
-                      fill: "#ECEFF1",
+                      fill: this.selected(geography.id),
                       stroke: "#607D8B",
                       strokeWidth: 0.75,
                       outline: "none",
                     },
                     hover: {
-                      fill: "#607D8B",
+                      fill: "yellow",
                       stroke: "#607D8B",
                       strokeWidth: 0.75,
-                      outline: "none",
+                      outline: "black",
                     },
                     pressed: {
-                      fill: "#FF5722",
+                      fill: "yellow",
                       stroke: "#607D8B",
                       strokeWidth: 0.75,
                       outline: "none",
                     },
                   }}
+                  onClick={this.handleClick.bind(this)}
                 />
               ))}
             </Geographies>
