@@ -29,15 +29,7 @@ class RootComponent extends React.Component {
         return v;
       }),
       scales: res.scales,
-      whoData: {
-        us: [
-          ['Post Malone', 39699916],
-          ['Kendrick Lamar', 21223395],
-          ['G-Eazy', 19889476],
-          ['Migos', 17442167],
-          ['Lil Uzi Vert', 17397323]
-        ]
-      }
+
     }));
   }
   selectSong(index) {
@@ -74,7 +66,7 @@ class RootComponent extends React.Component {
             traits={this.state.traits}
           /> : null }
         <Median data={this.state.data} selectedSongs={this.state.selectedSongs}/>
-        <WhoComponent whoData={this.state.whoData} />
+        <WhoComponent />
         </div>
     );
   }
